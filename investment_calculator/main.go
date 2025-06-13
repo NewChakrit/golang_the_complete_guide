@@ -6,12 +6,18 @@ import (
 )
 
 func main() {
-	var investmentAmount = 1000.
-	var expectedReturnRate = 5.5
-	var years = 10
+	//var (
+	//	investmentAmount   float64 = 1000
+	//	expectedReturnRate         = 5.5
+	//	years              float64 = 10
+	//)
+	const inflationRate = 2.5
+	investmentAmount, years, expectedReturnRate := 1000.0, 10.0, 5.5
 
-	var futureValue = float64(investmentAmount) * math.Pow(1+expectedReturnRate/100, float64(years))
-	fmt.Println(futureValue) // 1708.1444583535929
+	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
+	futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
+	fmt.Printf("Future Value: %v\n", futureValue) // 1708.1444583535929
+	fmt.Printf("Real Future Value: %v\n", futureRealValue)
 
 	//myCal()
 }
