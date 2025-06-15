@@ -1,38 +1,46 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
 )
 
-var accountBalanceFile = "balance.txt"
+var accountBalanceFile = "balance.xt"
 
 func writeBalacneTofile(balance float64) {
 	balanceStr := fmt.Sprint(balance)
 	err := os.WriteFile(accountBalanceFile, []byte(balanceStr), 0644)
 	if err != nil {
-		fmt.Print(err)
+		panic(err)
 	}
 }
 
-func readBalanceFromfile() float64 {
+func readBalanceFromfile() (float64, error) {
 	data, err := os.ReadFile(accountBalanceFile)
 	if err != nil {
-		fmt.Print(err)
+		return 1000, errors.New("Failed to find balance file.")
 	}
 
 	balStr := string(data)
 	balance, err := strconv.ParseFloat(balStr, 64)
 	if err != nil {
-		fmt.Print(err)
+		return 1000, errors.New("Cannot parse stored balance value.\n")
 	}
 
-	return balance
+	return balance, nil
 }
 
 func main() {
-	balance := readBalanceFromfile()
+	balance, err := readBalanceFromfile()
+	if err != nil {
+		//fmt.Printf("[Error] %v", err)
+		//fmt.Print("\nSet default balance to 1,000\n")
+		//fmt.Print("------------------------------\n")
+
+		panic(err)
+	}
 
 	fmt.Println("Welcome to Go Bank!")
 
@@ -102,8 +110,10 @@ func calculateDeposit(balance float64) float64 {
 	fmt.Scan(&deposit)
 
 	if deposit <= 0 {
-		fmt.Println("Invalid amount. Must be greater than 0.\n")
-		return balance
+		//fmt.Println("Invalid amount. Must be greater than 0.\n")
+		//return balance
+
+		panic("[ERROR] deposit must greatest than 0.")
 	}
 
 	balance += deposit
@@ -121,8 +131,10 @@ func calculateWithDraw(balance float64) float64 {
 		writeBalacneTofile(balance)
 		return balance
 	} else if withdraw <= 0 {
-		fmt.Println("Invalid amount. Must be greater than 0.\n")
-		return balance
+		//fmt.Println("Invalid amount. Must be greater than 0.\n")
+		//return balance
+
+		panic("[ERROR] withdraw must greatest than 0.")
 	} else {
 		balance -= withdraw
 		writeBalacneTofile(balance)
