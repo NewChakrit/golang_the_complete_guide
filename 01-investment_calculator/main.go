@@ -56,10 +56,12 @@ func outputText(text string) {
 	fmt.Print(text)
 }
 
-func calculateFutureValue(invAmount, expReturnRate, years float64) (float64, float64) {
-	fv := invAmount * math.Pow(1+expReturnRate/100, years)
-	rfv := fv / math.Pow(1+inflationRate/100, years)
+func calculateFutureValue(invAmount, expReturnRate, years float64) (fv, rfv float64) {
+	fv = invAmount * math.Pow(1+expReturnRate/100, years)
+	rfv = fv / math.Pow(1+inflationRate/100, years)
+
 	return fv, rfv
+	//return <= can use only return
 }
 
 //func calculateFutureValue(invAmount, expReturnRate, years float64) float64 {
