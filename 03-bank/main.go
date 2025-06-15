@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-var accountBalanceFile = "balance.xt"
+var accountBalanceFile = "balance.txt"
 
 func writeBalacneTofile(balance float64) {
 	balanceStr := fmt.Sprint(balance)
@@ -20,7 +20,7 @@ func writeBalacneTofile(balance float64) {
 func readBalanceFromfile() (float64, error) {
 	data, err := os.ReadFile(accountBalanceFile)
 	if err != nil {
-		return 1000, errors.New("Failed to find balance file.")
+		return 1000, errors.New("[ERROR] Failed to find balance file.\nSet default to balance 1000.\n")
 	}
 
 	balStr := string(data)
@@ -39,22 +39,14 @@ func main() {
 		//fmt.Print("\nSet default balance to 1,000\n")
 		//fmt.Print("------------------------------\n")
 
-		panic(err)
+		fmt.Print(err)
 	}
 
 	fmt.Println("Welcome to Go Bank!")
 
 	var choice, transaction int
 	for {
-		if transaction > 0 {
-			fmt.Println("What do you want to do next?")
-		} else {
-			fmt.Println("What do you want to do?")
-		}
-		fmt.Println("1. Check balance")
-		fmt.Println("2. Deposit money")
-		fmt.Println("3. Withdraw money")
-		fmt.Println("4. Exit")
+		presentOptions(transaction)
 
 		fmt.Print("Your choice: ")
 		fmt.Scan(&choice)
