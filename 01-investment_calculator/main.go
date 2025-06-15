@@ -5,41 +5,69 @@ import (
 	"math"
 )
 
+var investmentAmount, years, expectedReturnRate float64
+
+const inflationRate = 2.5
+
 func main() {
 	//var (
 	//	investmentAmount   float64 = 1000
 	//	expectedReturnRate         = 5.5
 	//	years              float64 = 10
 	//)
-	const inflationRate = 2.5
+
 	//var (
 	//	investmentAmount   float64
 	//	years              float64
 	//	expectedReturnRate float64
 	//)
 
-	var investmentAmount, years, expectedReturnRate float64
-
 	//expectedReturnRate := 5.5
 
-	fmt.Print("Investment Amount: ")
+	outputText("Investment Amount: ")
 	fmt.Scan(&investmentAmount)
 
-	fmt.Print("Expected Return Rate: ")
+	outputText("Expected Return Rate: ")
 	fmt.Scan(&expectedReturnRate)
 
-	fmt.Print("Years: ")
+	outputText("Years: ")
 	fmt.Scan(&years)
 
-	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
-	futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
+	//futureValue := calculateFutureValue(investmentAmount, expectedReturnRate, years)
+	//futureRealValue := calculateFutureRealValue(futureValue, inflationRate, years)
+
+	fv, rfv := calculateFutureValue(investmentAmount, expectedReturnRate, years)
 
 	// Outputs Information
 	// .2f print 2 digits of float, can chane number between "." and "f" to print how many digits you want.
-	fmt.Printf("Future Value: %.2f\n", futureValue)
-	fmt.Printf("Future Value (addjusted for inflation): %.3f\n", futureRealValue)
+
+	formattedFV := fmt.Sprintf("Future Values: %.2f\n", fv)
+	// If string tax is too long for line, we can use ``
+	formattedRFV := fmt.Sprintf("Future Value (addjusted for inflation): %.3f\n", rfv)
+
+	//fmt.Printf("Future Value: %.2f\n", futureValue)
+	fmt.Print(formattedFV)
+	fmt.Print(formattedRFV)
 
 	//myCal()
+}
+
+func outputText(text string) {
+	fmt.Print(text)
+}
+
+func calculateFutureValue(invAmount, expReturnRate, years float64) (float64, float64) {
+	fv := invAmount * math.Pow(1+expReturnRate/100, years)
+	rfv := fv / math.Pow(1+inflationRate/100, years)
+	return fv, rfv
+}
+
+//func calculateFutureValue(invAmount, expReturnRate, years float64) float64 {
+//	return invAmount * math.Pow(1+expReturnRate/100, years)
+//}
+
+func calculateFutureRealValue(futureValue, inflationRate, years float64) float64 {
+	return futureValue / math.Pow(1+inflationRate/100, years)
 }
 
 func myCal() {
