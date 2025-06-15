@@ -33,8 +33,11 @@ func main() {
 
 	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
 	futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
-	fmt.Printf("Future Value: %v\n", futureValue)
-	fmt.Printf("Real Future Value: %v\n", futureRealValue)
+
+	// Outputs Information
+	// .2f print 2 digits of float, can chane number between "." and "f" to print how many digits you want.
+	fmt.Printf("Future Value: %.2f\n", futureValue)
+	fmt.Printf("Future Value (addjusted for inflation): %.3f\n", futureRealValue)
 
 	//myCal()
 }
