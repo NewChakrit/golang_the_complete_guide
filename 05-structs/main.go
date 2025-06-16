@@ -32,10 +32,12 @@ func main() {
 		time.Now(),
 	}
 
-	outputUserDetails(&user)
+	user.outputUserDetails()
+
+	//outputUserDetails(&user)
 }
 
-func outputUserDetails(u *User) {
+func (u User) outputUserDetails() {
 
 	fmt.Println(u.FirstName, u.LastName, u.BirthDate)
 }
