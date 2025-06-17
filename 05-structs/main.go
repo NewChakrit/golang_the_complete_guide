@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"time"
 )
@@ -15,16 +16,23 @@ type user struct {
 func (u *user) clearUserName() {
 	u.FirstName = ""
 	u.LastName = ""
-	u.BirthDate = ""
+	//u.BirthDate = ""
 }
 
-func newUser(firstName, lastName, birthdate string) *user {
+func (u *user) outputUserDetails() {
+	fmt.Println(u.FirstName, u.LastName, u.BirthDate, u.BirthDate)
+}
+
+func newUser(firstName, lastName, birthdate string) (*user, error) {
+	if firstName == "" || lastName == "" || birthdate == "" {
+		return nil, errors.New("firstName or lastName or birthdate are required")
+	}
 	return &user{
 		firstName,
 		lastName,
 		birthdate,
 		time.Now(),
-	}
+	}, nil
 }
 
 func main() {
@@ -41,7 +49,11 @@ func main() {
 	// }
 
 	var appUser *user
-	appUser = newUser(firstName, lastName, birthdate)
+	appUser, err := newUser(firstName, lastName, birthdate)
+	if err != nil {
+		fmt.Printf("[ERROR] %v\n", err)
+		return
+	}
 
 	appUser.outputUserDetails()
 	appUser.clearUserName()
@@ -50,14 +62,10 @@ func main() {
 	//outputUserDetails(&appUser)
 }
 
-func (u user) outputUserDetails() {
-
-	fmt.Println(u.FirstName, u.LastName, u.BirthDate, u.BirthDate)
-}
-
 func getUserData(promptText string) string {
 	fmt.Print(promptText)
 	var value string
-	fmt.Scan(&value)
+	//fmt.Scan(&value)
+	fmt.Scanln(&value) // If pass enter, It will finish push value.
 	return value
 }
