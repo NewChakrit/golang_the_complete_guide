@@ -29,7 +29,7 @@ func main() {
 	//	LastName:  lastName,
 	//	BirthDate: birthdate,
 	//	CreatedAt: time.Now(),
-	//}
+	// }
 
 	user := user{
 		firstName,
