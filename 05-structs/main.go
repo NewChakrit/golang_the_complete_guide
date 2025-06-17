@@ -5,11 +5,17 @@ import (
 	"time"
 )
 
-type User struct {
+type user struct {
 	FirstName string
 	LastName  string
 	BirthDate string
 	CreatedAt time.Time
+}
+
+func (u *user) clearUserName() {
+	u.FirstName = ""
+	u.LastName = ""
+	u.BirthDate = ""
 }
 
 func main() {
@@ -25,7 +31,7 @@ func main() {
 	//	CreatedAt: time.Now(),
 	//}
 
-	user := User{
+	user := user{
 		firstName,
 		lastName,
 		birthdate,
@@ -33,11 +39,13 @@ func main() {
 	}
 
 	user.outputUserDetails()
+	user.clearUserName()
+	user.outputUserDetails()
 
 	//outputUserDetails(&user)
 }
 
-func (u User) outputUserDetails() {
+func (u user) outputUserDetails() {
 
 	fmt.Println(u.FirstName, u.LastName, u.BirthDate)
 }
