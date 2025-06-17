@@ -18,36 +18,41 @@ func (u *user) clearUserName() {
 	u.BirthDate = ""
 }
 
+func newUser(firstName, lastName, birthdate string) *user {
+	return &user{
+		firstName,
+		lastName,
+		birthdate,
+		time.Now(),
+	}
+}
+
 func main() {
 
 	firstName := getUserData("Please enter your first name: ")
 	lastName := getUserData("Please enter your last name: ")
 	birthdate := getUserData("Please enter your birthdate (MM/DD/YYYY): ")
 
-	//user := User{
+	//appUser := User{
 	//	FirstName: firstName,
 	//	LastName:  lastName,
 	//	BirthDate: birthdate,
 	//	CreatedAt: time.Now(),
 	// }
 
-	user := user{
-		firstName,
-		lastName,
-		birthdate,
-		time.Now(),
-	}
+	var appUser *user
+	appUser = newUser(firstName, lastName, birthdate)
 
-	user.outputUserDetails()
-	user.clearUserName()
-	user.outputUserDetails()
+	appUser.outputUserDetails()
+	appUser.clearUserName()
+	appUser.outputUserDetails()
 
-	//outputUserDetails(&user)
+	//outputUserDetails(&appUser)
 }
 
 func (u user) outputUserDetails() {
 
-	fmt.Println(u.FirstName, u.LastName, u.BirthDate)
+	fmt.Println(u.FirstName, u.LastName, u.BirthDate, u.BirthDate)
 }
 
 func getUserData(promptText string) string {
