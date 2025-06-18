@@ -10,6 +10,8 @@ func main() {
 	firstName := getUserData("Please enter your first name: ")
 	lastName := getUserData("Please enter your last name: ")
 	birthdate := getUserData("Please enter your birthdate (MM/DD/YYYY): ")
+	email := getUserData("Please enter your email: ")
+	password := getUserData("Please enter your password: ")
 
 	//appUser := User{
 	//	FirstName: firstName,
@@ -28,6 +30,11 @@ func main() {
 		fmt.Printf("[ERROR] %v\n", err)
 		return
 	}
+
+	admin := user.NewAdmin(email, password)
+	admin.OutputUserDetails()
+	admin.ClearUserName()
+	admin.OutputUserDetails()
 
 	appUser.OutputUserDetails()
 	appUser.ClearUserName()
