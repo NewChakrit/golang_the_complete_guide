@@ -1,39 +1,9 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"time"
+	"structs_and_custom_types/user"
 )
-
-type user struct {
-	FirstName string
-	LastName  string
-	BirthDate string
-	CreatedAt time.Time
-}
-
-func (u *user) clearUserName() {
-	u.FirstName = ""
-	u.LastName = ""
-	//u.BirthDate = ""
-}
-
-func (u *user) outputUserDetails() {
-	fmt.Println(u.FirstName, u.LastName, u.BirthDate, u.BirthDate)
-}
-
-func newUser(firstName, lastName, birthdate string) (*user, error) {
-	if firstName == "" || lastName == "" || birthdate == "" {
-		return nil, errors.New("firstName or lastName or birthdate are required")
-	}
-	return &user{
-		firstName,
-		lastName,
-		birthdate,
-		time.Now(),
-	}, nil
-}
 
 func main() {
 
@@ -48,16 +18,20 @@ func main() {
 	//	CreatedAt: time.Now(),
 	// }
 
-	var appUser *user
-	appUser, err := newUser(firstName, lastName, birthdate)
+	//var appUser *user.User
+
+	var appUser *user.User
+
+	//appUser, err := user.NewUser(firstName, lastName, birthdate)
+	appUser, err := user.New(firstName, lastName, birthdate)
 	if err != nil {
 		fmt.Printf("[ERROR] %v\n", err)
 		return
 	}
 
-	appUser.outputUserDetails()
-	appUser.clearUserName()
-	appUser.outputUserDetails()
+	appUser.OutputUserDetails()
+	appUser.ClearUserName()
+	appUser.OutputUserDetails()
 
 	//outputUserDetails(&appUser)
 }
