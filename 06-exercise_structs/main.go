@@ -13,7 +13,20 @@ type saver interface { // If interface has 1 func, should declare variable follo
 	Save() error
 }
 
+//type displayer interface {
+//	Display()
+//}
+
+type outputtable interface {
+	saver
+	Display()
+}
+
 func main() {
+	printSomething(1)
+	printSomething(1.5)
+	printSomething("Hello")
+
 	title, content := getNoteData()
 	todoText := getData("Todo content: ")
 
@@ -23,8 +36,7 @@ func main() {
 		return
 	}
 
-	todo.Display()
-	err = saveData(todo)
+	err = outPutData(todo)
 	if err != nil {
 		return
 	}
@@ -35,22 +47,47 @@ func main() {
 		return
 	}
 
-	userNote.Display()
-	err = saveData(userNote)
+	err = outPutData(userNote)
 	if err != nil {
 		return
 	}
 
 	fmt.Println("Saving the not successded!")
 
-	//jsonData, err := json.Marshal(&userNote)
-	//if err != nil {
-	//	fmt.Println(errors.New("Cannot mashall json."))
+}
+
+func printSomething(value interface{}) { // type interface{} <= หมายความว่ารับทุกค่า
+	intVal, ok := value.(int) // .(int) เป็นการ check type ท่าใหม่แหะ!
+	if ok {
+		fmt.Printf("Integer:", intVal)
+		return
+	}
+
+	floatVal, ok := value.(float64)
+	if ok {
+		fmt.Printf("Float:", floatVal)
+		return
+	}
+
+	stringVal, ok := value.(string)
+	if ok {
+		fmt.Printf("String:", stringVal)
+		return
+	}
+
+	//switch value.(type) { // ท่าใหม่แหะ! Wow
+	//case int:
+	//	fmt.Println("Integer: ", value)
+	//case float64:
+	//	fmt.Println("Float: ", value)
+	//case string:
+	//	fmt.Println(value)
 	//}
-	//err = ioutil.WriteFile("learn_go.json", jsonData, 0644)
-	//if err != nil {
-	//	fmt.Println(errors.New("Cannot write file"))
-	//}
+}
+
+func outPutData(data outputtable) error {
+	data.Display()
+	return saveData(data)
 }
 
 func saveData(data saver) error {
