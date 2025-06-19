@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"errors"
 	"example.com/exercise-struct/note"
 	"fmt"
 	"io/ioutil"
+	"os"
+	"strings"
 )
 
 func main() {
@@ -37,13 +40,16 @@ func getNoteData() (string, string) {
 }
 
 func getData(promptText string) string {
-	var value string
-	fmt.Print(promptText)
-	fmt.Scanln(&value)
+	fmt.Printf("%v ", promptText)
 
-	if value == "" {
+	reader := bufio.NewReader(os.Stdin)
+	text, err := reader.ReadString('\n')
+	if err != nil {
 		return ""
 	}
 
-	return value
+	text = strings.TrimSuffix(text, "\n") // TrimSuffix คือ ลบข้อความท้ายของ string
+	text = strings.TrimSuffix(text, "\r")
+
+	return text
 }
