@@ -2,11 +2,8 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
-	"errors"
 	"example.com/exercise-struct/note"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -21,15 +18,22 @@ func main() {
 	}
 
 	userNote.Display()
+	err = userNote.Save()
+	if err != nil {
+		fmt.Println("Saving the note failed.")
+		return
+	}
 
-	jsonData, err := json.Marshal(&userNote)
-	if err != nil {
-		fmt.Println(errors.New("Cannot mashall json."))
-	}
-	err = ioutil.WriteFile("learn_go.json", jsonData, 0644)
-	if err != nil {
-		fmt.Println(errors.New("Cannot write file"))
-	}
+	fmt.Println("Saving the not successded!")
+
+	//jsonData, err := json.Marshal(&userNote)
+	//if err != nil {
+	//	fmt.Println(errors.New("Cannot mashall json."))
+	//}
+	//err = ioutil.WriteFile("learn_go.json", jsonData, 0644)
+	//if err != nil {
+	//	fmt.Println(errors.New("Cannot write file"))
+	//}
 }
 
 func getNoteData() (string, string) {
