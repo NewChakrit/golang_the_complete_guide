@@ -3,13 +3,31 @@ package main
 import (
 	"bufio"
 	"example.com/exercise-struct/note"
+	"example.com/exercise-struct/todo"
 	"fmt"
 	"os"
 	"strings"
 )
 
+type saver interface { // If interface has 1 func, should declare variable follow by that one func name and add "er"
+	Save() error
+}
+
 func main() {
 	title, content := getNoteData()
+	todoText := getData("Todo content: ")
+
+	todo, err := todo.New(todoText)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	todo.Display()
+	err = saveData(todo)
+	if err != nil {
+		return
+	}
 
 	userNote, err := note.New(title, content)
 	if err != nil {
@@ -18,9 +36,8 @@ func main() {
 	}
 
 	userNote.Display()
-	err = userNote.Save()
+	err = saveData(userNote)
 	if err != nil {
-		fmt.Println("Saving the note failed.")
 		return
 	}
 
@@ -34,6 +51,16 @@ func main() {
 	//if err != nil {
 	//	fmt.Println(errors.New("Cannot write file"))
 	//}
+}
+
+func saveData(data saver) error {
+	err := data.Save()
+	if err != nil {
+		fmt.Println("Saving the note failed.")
+		return err
+	}
+
+	return nil
 }
 
 func getNoteData() (string, string) {
