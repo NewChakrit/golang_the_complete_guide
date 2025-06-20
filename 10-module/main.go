@@ -8,8 +8,16 @@ func main() {
 	transfromed := transformNumbers(&number, func(num int) int {
 		return num * 2
 	})
-
 	fmt.Println(transfromed)
+
+	double := createTransformer(2)
+	doubled := transformNumbers(&number, double)
+	fmt.Println(doubled)
+
+	triple := createTransformer(3)
+	tripled := transformNumbers(&number, triple)
+	fmt.Println(tripled)
+
 }
 
 func transformNumbers(number *[]int, transform func(int) int) []int {
@@ -22,4 +30,11 @@ func transformNumbers(number *[]int, transform func(int) int) []int {
 	}
 
 	return dNumbers
+}
+
+func createTransformer(factor int) func(int) int {
+
+	return func(num int) int {
+		return num * factor
+	}
 }
