@@ -3,23 +3,21 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println(factorial(5))
+	numbers := []int{1, 10, 15}
+	sum := sumup(1, 10, 15, 40, -5)    // todo 1 จะเป็น parameter แรก และที่เหลือเป็น parameter ที่ 2
+	anotherSum := sumup(1, numbers...) // todo ... = split slice
 
+	fmt.Println(sum)        // 61
+	fmt.Println(anotherSum) // 27
 }
 
-func factorial(num int) int {
-	//result := 1
-	//for i := 1; i <= num; i++ {
-	//	result *= i
-	//}
+// func sumup(numbers ...int) int {
+func sumup(startingValue int, numbers ...int) int {
+	sum := startingValue
 
-	if num == 0 {
-		return 1
-	} // break loop
+	for _, v := range numbers {
+		sum += v
+	}
 
-	return num * factorial(num-1) // loop
+	return sum
 }
-
-//factorial of 5 => 5 * 4 * 3 * 2 * 1 = 120
-
-//3 * 2 * 1
