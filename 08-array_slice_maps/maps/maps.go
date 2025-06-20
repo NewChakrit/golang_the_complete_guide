@@ -2,6 +2,12 @@ package maps
 
 import "fmt"
 
+type Product struct {
+	id    uint
+	title string
+	price float64
+}
+
 func Maps() {
 	websites := map[string]string{
 		"Google": "https://google.com",
@@ -9,13 +15,6 @@ func Maps() {
 	}
 
 	fmt.Println(websites["Google"])
-
-	//fmt.Println(websites)
-
-	//for k, v := range websites {
-	//	fmt.Printf("Company: %s, Website: %s\n", k, v)
-	//}
-	//
 
 	// Add map key value
 	websites["Youtube"] = "https://youtube.com"
@@ -28,4 +27,8 @@ func Maps() {
 	// Delete value
 	delete(websites, "Google")
 	fmt.Println(websites)
+
+	//for k, v := range websites {
+	//	fmt.Printf("Company: %s, Website: %s\n", k, v)
+	//}
 }
