@@ -2,18 +2,19 @@ package prices
 
 import (
 	"example.com/price_calculator/conversion"
-	"example.com/price_calculator/filemanager"
+	"example.com/price_calculator/iomanager"
 	"fmt"
 )
 
 type TaxIncludedPriceJob struct {
-	TaxRate           float64
-	InputPrices       []float64
-	TaxIncludedPrices map[string]string
+	IOManager         iomanager.IOManager `json:"-"` // todo การใช่้ "-" นั้นหมายความว่าเราขอให้ละเว้น json ค่านี้
+	TaxRate           float64             `json:"tax_rate"`
+	InputPrices       []float64           `json:"input_prices"`
+	TaxIncludedPrices map[string]string   `json:"tax_included_prices"`
 }
 
 func (job *TaxIncludedPriceJob) LoadData() {
-	lines, err := filemanager.Readlins("prices.txt")
+	lines, err := job.IOManager.ReadLines()
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,16 +57,16 @@ func (job *TaxIncludedPriceJob) Process() {
 
 	job.TaxIncludedPrices = result
 
-	err := filemanager.WriteJSON(fmt.Sprintf("result_%.0f.json", job.TaxRate*100), job)
+	err := job.IOManager.WriteResult(job)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 }
 
-func NewTaxIncludedPriceJob(taxRate float64) *TaxIncludedPriceJob {
-
+func NewTaxIncludedPriceJob(iom iomanager.IOManager, taxRate float64) *TaxIncludedPriceJob {
 	return &TaxIncludedPriceJob{
+		IOManager:   iom,
 		TaxRate:     taxRate,
 		InputPrices: []float64{10, 20, 30},
 	}
