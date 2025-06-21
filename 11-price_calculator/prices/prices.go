@@ -30,10 +30,16 @@ func (job *TaxIncludedPriceJob) LoadData() error {
 	return nil
 }
 
-func (job *TaxIncludedPriceJob) Process() error {
+func (job *TaxIncludedPriceJob) Process(doneChan chan bool, errorChan chan error) {
 	err := job.LoadData()
+
+	// mock for test channel ที่ win ก่อน
+	//errorChan <- errors.New("An error!")
+
 	if err != nil {
-		return err
+		//return err
+		errorChan <- err
+		return
 	}
 
 	//result := make(map[string]float64, len(job.TaxIncludedPrices))
@@ -59,8 +65,9 @@ func (job *TaxIncludedPriceJob) Process() error {
 	//}
 
 	job.TaxIncludedPrices = result
-
-	return job.IOManager.WriteResult(job) // if func err it return error, else return nil
+	//return job.IOManager.WriteResult(job) // if func err it return error, else return nil
+	job.IOManager.WriteResult(job)
+	doneChan <- true
 }
 
 func NewTaxIncludedPriceJob(iom iomanager.IOManager, taxRate float64) *TaxIncludedPriceJob {

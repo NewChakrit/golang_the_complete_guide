@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"time"
 )
 
 type FileManager struct {
@@ -32,28 +33,34 @@ func (fm FileManager) ReadLines() ([]string, error) {
 
 	err = scanner.Err() // scanner.Scan() บอกแค่ true false จึงต้องใช้ scanner.Err() ในการเช็ค err
 	if err != nil {
-		file.Close()
+		//file.Close()
 		return nil, errors.New("Reading the file content failed.")
 	}
 
-	file.Close()
+	//file.Close()
 	return lines, nil
 }
 
 func (fm FileManager) WriteResult(data interface{}) error {
 	file, err := os.Create(fm.OutputFilePath)
+
+	defer file.Close()
+
 	if err != nil {
 		return errors.New("Failed to create file.")
 	}
 
+	// TODO mock for test goroutine
+	time.Sleep(3 * time.Second)
+
 	encoder := json.NewEncoder(file) // todo แปลงข้อความเป็นรูปแบบ JSON
 	err = encoder.Encode(data)
 	if err != nil {
-		file.Close()
+		//file.Close()
 		return errors.New("Failed to convert data to JSON.")
 	}
 
-	file.Close()
+	//file.Close()
 	return nil
 }
 
