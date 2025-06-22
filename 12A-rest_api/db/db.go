@@ -2,18 +2,37 @@ package db
 
 import (
 	"database/sql"
-	_ "github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var DB *sql.DB
 
 func InitDB() {
-	DB, err := sql.Open("sqlite3", "api.db")
+	var err error
+	DB, err = sql.Open("sqlite3", "api.db")
 	if err != nil {
-		panic("Could not connected database.")
+		panic(err)
 	}
 
 	DB.SetMaxOpenConns(10) // กำหนดค่่าการ pulling เชื่อมต่อ
 	DB.SetMaxIdleConns(5)  // กำหนดค่าการเชื่อมต่อสูงสุดต่อการใช้งาน
 
+	createTables()
+}
+
+func createTables() {
+	createEventsTable := `
+	CREATE TABLE IF NOT EXISTS events (
+	    id INTEGER PRIMARY KEY AUTOINCREMENT,
+	 	name TEXT NOT NULL,
+	 	description TEXT NOT NULL,
+	 	location TEXT NOT NULL,
+	 	dateTime DATETIME NOT NULL,
+	 	user_id INTEGER
+	)
+`
+	_, err := DB.Exec(createEventsTable)
+	if err != nil {
+		panic(err)
+	}
 }
