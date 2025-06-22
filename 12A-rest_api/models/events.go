@@ -6,7 +6,7 @@ import (
 
 var events []Event
 
-func (e Event) Save() error {
+func (e *Event) Save() error {
 	query := `INSERT INTO events(name ,description, location, dateTime, user_id) 
 	VALUES (?, ?, ?, ?, ?)` // todo "?" เพื่อแทนค่า column ต่างๆ ใน table ตามลำดับ
 
