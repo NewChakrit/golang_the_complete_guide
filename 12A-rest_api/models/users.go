@@ -1,6 +1,9 @@
 package models
 
-import "example.com/rest_api/db"
+import (
+	"example.com/rest_api/db"
+	"example.com/rest_api/utils"
+)
 
 func (u User) Save() error {
 	query := "INSERT INTO users(email, password) values (? ,?)"
@@ -11,7 +14,12 @@ func (u User) Save() error {
 
 	defer stmt.Close()
 
-	result, err := stmt.Exec(u.Email, u.Password)
+	hashedPassword, err := utils.HashPassword(u.Password)
+	if err != nil {
+		return err
+	}
+
+	result, err := stmt.Exec(u.Email, hashedPassword)
 	if err != nil {
 		return err
 	}
