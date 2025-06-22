@@ -5,6 +5,7 @@ import (
 	"example.com/rest_api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -12,9 +13,26 @@ func main() {
 	server := gin.Default()
 
 	server.GET("/events", getEvents)
+	server.GET("/event/:id", getEvent)
 	server.POST("/events", createEvent)
 
 	server.Run(":8080") // localhost:8080
+}
+
+func getEvent(context *gin.Context) {
+	eventId, err := strconv.ParseInt(context.Param("id"), 10, 64) // base คือเลขฐาน
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse event id."})
+		return
+	}
+
+	event, err := models.GetEventByID(eventId)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event."})
+		return
+	}
+
+	context.JSON(http.StatusOK, event)
 }
 
 func getEvents(context *gin.Context) {

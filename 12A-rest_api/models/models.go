@@ -2,17 +2,7 @@ package models
 
 import (
 	"example.com/rest_api/db"
-	"time"
 )
-
-type Event struct {
-	ID          int64
-	Name        string    `binding:"required"` // for not required field
-	Description string    `binding:"required"`
-	Location    string    `binding:"required"`
-	DateTime    time.Time `binding:"required"`
-	UserID      int
-}
 
 var events []Event
 
@@ -41,6 +31,20 @@ func (e Event) Save() error {
 	events = append(events, Event{})
 
 	return nil
+}
+
+func GetEventByID(id int64) (*Event, error) {
+	query := `SELECT * FROM events WHERE id = ?`
+	row := db.DB.QueryRow(query, id)
+
+	var event Event
+	err := row.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &event, nil
+
 }
 
 func GetAllEvents() ([]Event, error) {
