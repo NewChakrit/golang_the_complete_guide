@@ -98,6 +98,34 @@ func (e Event) Delete() error {
 	return err
 }
 
+func (e Event) Register(userID int64) error {
+	query := `INSERT INTO registrations(event_id, user_id) values(?, ?)`
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, e.UserID)
+
+	return err
+}
+
+func (e Event) CancelRegistration(userID int64) error {
+	query := `DELETE FROM registrations  WHERE event_id = ? and user_id = ?`
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userID)
+
+	return err
+}
+
 /* todo Note
 DB.Exec() vs. DB.Query()
 ก่อนอื่น เรามาทำความเข้าใจความแตกต่างหลักระหว่าง Exec() และ Query() ก่อน:
